@@ -1,0 +1,28 @@
+
+.rounded-border {
+  border-radius: 8px !important;
+}
+
+.custom-field.v-text-field--outlined fieldset {
+  border-color: #BDBDBD !important;
+  border-radius: 8px !important;
+}
+
+.custom-field.v-text-field input {
+  padding: 2px 0px 5px 0px !important;
+}
+
+.input-add {
+  outline: none ;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+.input-add::placeholder {
+  font-weight: 500;
+  color: rgb(249, 247, 247);
+  opacity: 1; /* Firefox */
+}
+.theme--light.v-divider {
+  border-color: #fff !important;
+}
