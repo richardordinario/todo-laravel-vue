@@ -23,33 +23,67 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: ['data'],
   data: function data() {
     return {
-      title: ''
+      title: '',
+      errs: []
     };
   },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
+    errors: function errors(state) {
+      return state.errors;
+    }
+  })),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(['updateTodoAction', 'createSubTodoAction', 'updateSubTodoAction', 'deleteSubTodoAction'])), {}, {
     updateTodo: function updateTodo(e) {
+      var _this = this;
+
       console.log(e);
       this.updateTodoAction({
         id: this.data.id,
         _method: 'PUT',
         title: e.target.innerText
+      }).then(function (_) {
+        _this.errs = [];
+
+        if (_this.$errors()) {
+          console.log(_this.errors);
+          alert("".concat(_this.errors.title[0]));
+          location.reload();
+        }
       });
     },
     save: function save() {
-      var _this = this;
+      var _this2 = this;
 
       this.createSubTodoAction({
         todo_id: this.data.id,
         title: this.title
       }).then(function (_) {
-        _this.title = '';
+        _this2.errs = [];
+
+        if (_this2.$errors()) {
+          console.log(_this2.errors);
+          return _this2.errs = _this2.errors;
+        }
+
+        _this2.title = '';
       });
     },
     updateSubTodo: function updateSubTodo(e, id) {
+      var _this3 = this;
+
+      var title = e.target.innerText;
       this.updateSubTodoAction({
         id: id,
         _method: 'PUT',
         title: e.target.innerText
+      }).then(function (_) {
+        _this3.errs = [];
+
+        if (_this3.$errors()) {
+          console.log(_this3.errors);
+          alert("".concat(_this3.errors.title[0]));
+          location.reload();
+        }
       });
     },
     remove: function remove(id) {
@@ -96,9 +130,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       title: '',
-      tab: null
+      tab: null,
+      errs: []
     };
   },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
+    errors: function errors(state) {
+      return state.errors;
+    }
+  })),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(['createTodoAction', 'deleteTodoAction', 'showTodoAction'])), {}, {
     save: function save() {
       var _this = this;
@@ -106,6 +146,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.createTodoAction({
         title: this.title
       }).then(function (_) {
+        _this.errs = [];
+
+        if (_this.$errors()) {
+          console.log(_this.errors);
+          return _this.errs = _this.errors;
+        }
+
         _this.title = '';
       });
     },
@@ -237,6 +284,10 @@ var render = function render() {
     staticClass: "ma-3 d-flex align-center justify-space-between"
   }, [_c("div", {
     staticClass: "text-h6 white--text mx-2",
+    staticStyle: {
+      "max-height": "50px",
+      "overflow-y": "auto"
+    },
     attrs: {
       contenteditable: ""
     },
@@ -244,6 +295,8 @@ var render = function render() {
       blur: _vm.updateTodo
     }
   }, [_vm._v(_vm._s(_vm.data.title))]), _vm._v(" "), _c("div", {
+    staticClass: "d-flex flex-column"
+  }, [_c("div", {
     staticClass: "d-flex align-center my-2",
     staticStyle: {
       "border-bottom": "2px solid #fff"
@@ -277,7 +330,9 @@ var render = function render() {
     on: {
       click: _vm.save
     }
-  }, [_c("v-icon", [_vm._v("mdi-plus")])], 1)], 1)]), _vm._v(" "), _c("div", {
+  }, [_c("v-icon", [_vm._v("mdi-plus")])], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "white--text caption font-weight-bold"
+  }, [_vm._v(_vm._s(_vm.errs.title ? _vm.errs.title[0] : ""))])])]), _vm._v(" "), _c("div", {
     staticStyle: {
       border: "1px solid #ffff !important"
     }
@@ -291,8 +346,12 @@ var render = function render() {
         border: "2px solid #fff !important",
         "border-radius": "8px"
       }
-    }, [_c("div", {
+    }, [_c("div", {}, [_c("div", {
       staticClass: "body-1 white--text font-weight-bold",
+      staticStyle: {
+        "max-height": "30px",
+        "overflow-y": "auto"
+      },
       attrs: {
         contenteditable: ""
       },
@@ -301,7 +360,7 @@ var render = function render() {
           return _vm.updateSubTodo($event, item.id);
         }
       }
-    }, [_vm._v("\n            " + _vm._s(item.title) + "\n          ")]), _vm._v(" "), _c("div", {
+    }, [_vm._v("\n              " + _vm._s(item.title) + "\n            ")])]), _vm._v(" "), _c("div", {
       staticClass: "d-flex align-center"
     }, [_c("v-checkbox", {
       staticClass: "mb-2",
@@ -428,7 +487,7 @@ var render = function render() {
     staticClass: "flex-grow-1 input-add mx-1",
     attrs: {
       type: "text",
-      placeholder: "New list"
+      placeholder: "New lists"
     },
     domProps: {
       value: _vm.title
@@ -447,7 +506,9 @@ var render = function render() {
     on: {
       click: _vm.save
     }
-  }, [_c("v-icon", [_vm._v("mdi-plus")])], 1)], 1)], 1);
+  }, [_c("v-icon", [_vm._v("mdi-plus")])], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "white--text font-weight-bold"
+  }, [_vm._v(_vm._s(_vm.errs.title ? _vm.errs.title[0] : ""))])], 1);
 };
 
 var staticRenderFns = [];

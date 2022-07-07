@@ -25,7 +25,7 @@ class TodoRequest extends FormRequest
     {
         return [
           'user_id' => 'sometimes',
-          'title' => 'required'
+          'title' => 'required|unique:todos,title|max:255',
         ];
     }
 

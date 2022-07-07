@@ -17,7 +17,7 @@ class CreateSubTodosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('todo_id');
             $table->foreign('todo_id')->references('id')->on('todos')->onDelete('cascade');
-            $table->string('title');
+            $table->string('title')->unique();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

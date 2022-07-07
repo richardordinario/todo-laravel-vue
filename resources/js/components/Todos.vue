@@ -23,26 +23,33 @@
       </v-list>
     </v-sheet>
 
-    <div class="d-flex align-center my-2 " style="border-bottom: 2px solid #fff">
-      <input v-model="title" type="text" class="flex-grow-1 input-add mx-1" placeholder="New list"/>
+    <div class="d-flex align-center my-2" style="border-bottom: 2px solid #fff">
+      <input v-model="title" type="text" class="flex-grow-1 input-add mx-1" placeholder="New lists"/>
       <v-btn icon color="#fff" @click="save">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
+    <div class="white--text font-weight-bold">{{errs.title ? errs.title[0] : ''}}</div>
   </section>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   props: ['data'],
 
   data: () => ({
     title: '',
-    tab: null
+    tab: null,
+    errs: []
   }),
+  computed: {
+    ...mapState({
+      errors: (state) => state.errors
+    })
 
+  },
   methods: {
     ...mapActions(['createTodoAction','deleteTodoAction', 'showTodoAction']),
 
@@ -50,6 +57,11 @@ export default {
       this.createTodoAction({
         title: this.title
       }).then(_ => {
+        this.errs= []
+        if(this.$errors()) {
+          console.log(this.errors);
+          return this.errs= this.errors
+        }
         this.title = ''
       })
     },

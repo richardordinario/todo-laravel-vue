@@ -25,7 +25,7 @@ class SubTodoRequest extends FormRequest
     {
         return [
           'todo_id' => 'sometimes',
-          'title' => 'required',
+          'title' => 'required|unique:sub_todos,title|max:255',
           'status' => 'sometimes'
         ];
     }
